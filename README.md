@@ -75,7 +75,7 @@ To help you keep track of it:
 - Log every request.
 - ISampleService implementation.
 - Validations Create method.
-- Validations Upload method.
+- Validations Update method.
 - Limit to GetAllAsync
 - New functionality with flattened data.
 - Create one unit test.
