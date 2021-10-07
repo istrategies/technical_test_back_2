@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FluentValidation;
+using SampleApp.Application.Contracts.Validators;
+using System;
 
 namespace SampleApp.Application.Contracts.DTO
 {
@@ -15,6 +17,16 @@ namespace SampleApp.Application.Contracts.DTO
         public override string ToString()
         {
             return $"Id: {SubSampleId} - Name: {Info}";
+        }
+    }
+
+    public class SubSampleValidator : AbstractValidator<SubSample> {
+        public SubSampleValidator() {
+            RuleFor(x => x.SubSampleId)
+                .NotNull()
+                .NotEmpty()
+                .SetValidator(new GuidValidator());
+            RuleFor(x => x.Info).MaximumLength(128);
         }
     }
 }
