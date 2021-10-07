@@ -3,6 +3,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SampleApp.Application;
+using SampleApp.Application.Contracts.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using SampleApp.Application.Contracts.DTO;
+using Microsoft.Extensions.Logging;
+using System.IO;
+using SampleApp.Application.Helpers;
 
 namespace SampleApp.Api
 {
@@ -11,8 +18,12 @@ namespace SampleApp.Api
     /// </summary>
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
-        { }
+        {
+            Configuration = configuration;
+        }
 
 
         /// <summary>
@@ -21,8 +32,17 @@ namespace SampleApp.Api
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            
+            services.AddControllers()
+                .AddFluentValidation();
+            // Validators
+            services.AddTransient<IValidator<SampleForCreate>, SampleForCreateValidator>();
+            services.AddTransient<IValidator<SubSample>, SubSampleValidator>();
+            services.AddTransient<IValidator<PageParameters>, PageParemetersValidator>();
+
+            //DI Logger
+            var currentPath = Directory.GetCurrentDirectory();
+            services.AddSingleton<IRequestLogger>(new RequestLogger($"{currentPath}"+Configuration.GetValue<string>("LogFile")));
+
             // Swagger config
             services.AddSwaggerGen(options =>
             {
@@ -42,8 +62,10 @@ namespace SampleApp.Api
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        /// <param name="loggerFactory"></param>
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

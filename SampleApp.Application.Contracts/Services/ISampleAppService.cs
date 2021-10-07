@@ -1,6 +1,8 @@
 ﻿using SampleApp.Application.Contracts.DTO;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace SampleApp.Application.Contracts.Services
@@ -16,7 +18,7 @@ namespace SampleApp.Application.Contracts.Services
         /// <param name="numPage"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        Task<IEnumerable<SampleForRead>> GetAllSamplesAsync();
+        Task<IEnumerable<SampleForRead>> GetAllSamplesAsync(int rowsNumber = 0, string key = "Name");
 
         /// <summary>
         /// Retrieves a sample based opn it's Id
@@ -24,6 +26,15 @@ namespace SampleApp.Application.Contracts.Services
         /// <param name="id"></param>
         /// <returns></returns>
         Task<SampleForRead> GetByIdAsync(Guid id);
+
+        /// <summary>
+        /// Retrieves all subsamples with it's sample data
+        /// </summary>
+        /// <param name="pageParameters"></param>
+        /// <param name="greaterThan"></param>
+        /// <param name="lessThan"></param>
+        /// <returns></returns>
+        Task<IEnumerable<SubSampleForRead>> GetAllSubSamplesAsync(PageParameters pageParameters, DateTimeOffset? greaterThan, DateTimeOffset? lessThan);
 
         /// <summary>
         /// Retrieves the SubSamples of a Sample
