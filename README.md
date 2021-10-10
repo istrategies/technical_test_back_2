@@ -65,7 +65,15 @@ Pick one of the functionalities provided by the API and create a unit test to co
 # Questions over the API
 
 - Why do you think the dependency injection is implemented in each layer and not only in the Api?
+    El tener separada la inyeccion de dependencias por capas permite mantener las referencias de proyectos y al disponibilidad de las clases acotadas a las capas dónde corresponde
+    
 - Do you think there is anything that can be improved in the SamplesController?
+    Se podria crear un controlador base o bien extraer a una función donde se centralice la respuesta ya que en multiples casos se comprueba si el resultado es null y devolviendo el códgio 500.
+    El método en cualquier caso quedaría algo similar a:
+
+    protected IActionResult Invalid() {
+        return StatusCode(StatusCodes.Status500InternalServerError, Constants.UNEXPECTED_ERROR);
+    }
 
 *These questions can be answered in Spanish*.
 

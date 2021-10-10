@@ -19,7 +19,7 @@ namespace SampleApp.Infrastructure.Data.Models.Extensions
         public static void SeedData(this ModelBuilder modelBuilder)
         {
             var root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-
+            //var root = @"F:\Repositorio\technical_test_back_2\SampleApp.Infrastructure";
             List<Sample> samples = JsonSerializer.Deserialize<List<Sample>>(File.ReadAllText(Path.Combine(root, Constants.SAMPLE_SEED_PATH)));
             List<SubSample> subSamples = JsonSerializer.Deserialize<List<SubSample>>(File.ReadAllText(Path.Combine(root, Constants.SUBSAMPLE_SEED_PATH)));
 

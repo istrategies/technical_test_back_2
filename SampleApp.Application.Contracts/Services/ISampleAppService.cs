@@ -52,5 +52,14 @@ namespace SampleApp.Application.Contracts.Services
         /// <param name="id"></param>
         /// <returns></returns>
         Task DeleteSampleAsync(Guid id);
+
+        /// <summary>
+        /// Retrieve all Filter samples and subsamples
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        Task<IEnumerable<FilterSampleForRead>> GetAllSamplesAsync(SampleFilter filter);
     }
 }
+
+
