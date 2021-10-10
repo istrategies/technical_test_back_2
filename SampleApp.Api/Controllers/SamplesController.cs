@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SampleApp.Api.Filters;
 using SampleApp.Application.Contracts.DTO;
 using SampleApp.Application.Contracts.Services;
 using System;
@@ -154,6 +155,30 @@ namespace SampleApp.Api.Controllers
                 await _service.DeleteSampleAsync(id);
     
             return NoContent();
+        }
+
+        /// <summary>
+        /// Updates an existing Sample
+        /// </summary>
+        /// <param name="sample">Sample to update</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetAllAsync")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(FilterSampleForRead), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllAsync(SampleFilter filter)
+        {
+            IEnumerable<FilterSampleForRead> result;
+
+            using (_service)
+                result = await _service.GetAllSamplesAsync(filter);
+
+            // Just in case, this scenario should not happen
+            if (result == null)
+                return StatusCode(StatusCodes.Status500InternalServerError, Constants.UNEXPECTED_ERROR);
+
+            return Ok(result);
         }
     }
 }

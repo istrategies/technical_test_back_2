@@ -8,18 +8,20 @@ namespace SampleApp.Application.Contracts.DTO
     /// </summary>
     public class SampleForRead
     {
-        public Guid Sample1Id { get; set; }
+        // No se desea devolver el identificador
+        //public Guid SampleId { get; set; }
+        public string Code { get; set; }
 
         public string Name { get; set; }
 
         public DateTimeOffset Created { get; set; }
 
-        public IEnumerable<SubSample> SubSamples { get; set; }
+        public IEnumerable<SubSampleForRead> SubSamples { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"Id: {Sample1Id} - Name: {Name}";
+            return $"Id: {Code} - Name: {Name}";
         }
     }
 }
