@@ -129,6 +129,8 @@ namespace SampleApp.Api.Controllers
         [ProducesResponseType(typeof(SampleForRead), StatusCodes.Status201Created)]
         public async Task<IActionResult> CreateAsync(SampleForCreate sample)
         {
+            if (!ModelState.IsValid || sample == null) return BadRequest();
+
             Activity.Current
                 .Start()
                 .AddTag("Log", $"{nameof(CreateAsync)} is called")
@@ -164,6 +166,8 @@ namespace SampleApp.Api.Controllers
         [ProducesResponseType(typeof(SampleForRead), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateAsync(SampleForUpdate sample)
         {
+            if (!ModelState.IsValid || sample == null) return BadRequest();
+
             Activity.Current
                 .Start()
                 .AddTag("Log", $"{nameof(UpdateAsync)} is called")

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace SampleApp.Application.Contracts.DTO
 {
@@ -9,8 +8,7 @@ namespace SampleApp.Application.Contracts.DTO
     /// </summary>
     public class SampleForRead
     {
-        [JsonIgnore]
-        public Guid SampleId { get; set; }
+        public string SampleId { get; set; }
 
         public string Name { get; set; }
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace SampleApp.Application.Contracts.DTO
 {
@@ -8,9 +8,10 @@ namespace SampleApp.Application.Contracts.DTO
     /// </summary>
     public class SubSample
     {
-        [JsonIgnore]
+        [Required(ErrorMessage = "SubSampleId is required.")]
         public Guid SubSampleId { get; set; }
 
+        [MaxLength(128, ErrorMessage = "MaxLength of info is exceeded.")]
         public string Info { get; set; }
 
         /// <inheritdoc/>

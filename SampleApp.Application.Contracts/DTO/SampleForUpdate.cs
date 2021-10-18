@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace SampleApp.Application.Contracts.DTO
 {
@@ -9,9 +9,10 @@ namespace SampleApp.Application.Contracts.DTO
     /// </summary>
     public class SampleForUpdate
     {
-        [JsonIgnore]
+        [Required(ErrorMessage = "SampleId is required.")]
         public Guid SampleId { get; set; }
 
+        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
 
         public List<SubSample> SubSamples { get; set; }

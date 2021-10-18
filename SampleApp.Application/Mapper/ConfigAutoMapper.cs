@@ -1,29 +1,38 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using SampleApp.Application.Contracts.DTO;
 using SampleApp.Domain.Entities;
-using static System.DateTime;
+using SubSample = SampleApp.Application.Contracts.DTO.SubSample;
 
 namespace SampleApp.Application.Mapper
 {
     public static class ConfigAutoMapper
     {
-        public static MapperConfiguration ConfigToReadFromCreate;
-        public static MapperConfiguration ConfigToReadFromUpdate;
-        public static MapperConfiguration ConfigToCreate;
-        public static MapperConfiguration ConfigToRead;
-        public static MapperConfiguration ConfigToUpdate;
-        
+        public static MapperConfiguration Config;
+
         static ConfigAutoMapper()
         {
-            ConfigToReadFromCreate = new MapperConfiguration(cfg => cfg.CreateMap<SampleForCreate, SampleForRead>()
-                .ForMember(dest => dest.SampleId, opts => opts.MapFrom(s => s.ToString())));
-            ConfigToReadFromUpdate = new MapperConfiguration(cfg => cfg.CreateMap<SampleForUpdate, SampleForRead>()
-                .ForMember(dest => dest.SampleId, opts => opts.MapFrom(s => s.ToString())));
-            ConfigToRead = new MapperConfiguration(cfg => cfg.CreateMap<Sample, SampleForRead>()
-                .ForMember(dest => dest.SampleId, opts => opts.MapFrom(s => s.ToString())));
-            ConfigToUpdate = new MapperConfiguration(cfg => cfg.CreateMap<SampleForUpdate, Sample>());
-            ConfigToCreate = new MapperConfiguration(cfg => cfg.CreateMap<SampleForCreate, Sample>()
-                .ForMember(dest => dest.Created, opts => opts.MapFrom(s => UtcNow)));
+
+            Config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<SubSample, Domain.Entities.SubSample>();
+                cfg.CreateMap<Domain.Entities.SubSample, SubSample>()
+                    .ForMember(s => s.SubSampleId, op => op.Ignore());
+                cfg.CreateMap<SampleForCreate, Sample>()
+                    .ForMember(dest => dest.Created, opts => opts.MapFrom(s => DateTime.UtcNow))
+                    .ForMember(s => s.SubSamples, opts => opts.MapFrom(o => o.SubSamples));
+                cfg.CreateMap<SampleForUpdate, Sample>()
+                    .ForMember(s => s.SubSamples, opts => opts.MapFrom(s => s.SubSamples));
+                cfg.CreateMap<Sample, SampleForRead>()
+                    .ForMember(s => s.SampleId, op => op.Ignore())
+                    .ForMember(s => s.SubSamples, opts => opts.MapFrom(s => s.SubSamples));
+                cfg.CreateMap<SampleForCreate, SampleForRead>()
+                    .ForMember(s => s.SampleId, op => op.Ignore())
+                    .ForMember(s => s.SubSamples, opts => opts.MapFrom(s => s.SubSamples));
+                cfg.CreateMap<SampleForUpdate, SampleForRead>()
+                    .ForMember(s => s.SampleId, op => op.Ignore())
+                    .ForMember(s => s.SubSamples, opts => opts.MapFrom(s => s.SubSamples));
+            });
         }
     }
 }
