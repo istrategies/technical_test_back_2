@@ -87,5 +87,6 @@ To help you keep track of it:
 - Validations Update method.
 - Limit to GetAllAsync
 - New functionality with flattened data.
+    - No comprendo el requerimiento
 - Create one unit test.
 - Answer the questions
