@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace SampleApp.Application.Contracts.DTO
 {
@@ -7,6 +8,7 @@ namespace SampleApp.Application.Contracts.DTO
     /// </summary>
     public class SubSample
     {
+        [JsonIgnore]
         public Guid SubSampleId { get; set; }
 
         public string Info { get; set; }

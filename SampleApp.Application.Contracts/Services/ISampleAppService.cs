@@ -30,7 +30,7 @@ namespace SampleApp.Application.Contracts.Services
         /// </summary>
         /// <param name="sampleId"></param>
         /// <returns></returns>
-        Task<IEnumerable<Contracts.DTO.SubSample>> GetSubSamplesAsync(Guid sampleId);
+        Task<IEnumerable<SubSample>> GetSubSamplesAsync(Guid sampleId);
 
         /// <summary>
         /// Adds a new Sample

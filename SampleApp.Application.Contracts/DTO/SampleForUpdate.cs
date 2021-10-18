@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace SampleApp.Application.Contracts.DTO
 {
@@ -9,6 +9,7 @@ namespace SampleApp.Application.Contracts.DTO
     /// </summary>
     public class SampleForUpdate
     {
+        [JsonIgnore]
         public Guid SampleId { get; set; }
 
         public string Name { get; set; }

@@ -34,6 +34,7 @@ namespace SampleApp.Api
             });
 
             services.AddApplicationLayer();
+            services.AddApplicationInsightsTelemetry();
         }
 
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace SampleApp.Application.Contracts.DTO
 {
@@ -8,7 +9,8 @@ namespace SampleApp.Application.Contracts.DTO
     /// </summary>
     public class SampleForRead
     {
-        public Guid Sample1Id { get; set; }
+        [JsonIgnore]
+        public Guid SampleId { get; set; }
 
         public string Name { get; set; }
 
@@ -19,7 +21,7 @@ namespace SampleApp.Application.Contracts.DTO
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"Id: {Sample1Id} - Name: {Name}";
+            return $"Id: {SampleId} - Name: {Name}";
         }
     }
 }

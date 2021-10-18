@@ -65,14 +65,23 @@ Pick one of the functionalities provided by the API and create a unit test to co
 # Questions over the API
 
 - Why do you think the dependency injection is implemented in each layer and not only in the Api?
+
+    - Me parece muy útil para tener capas realmente desacopladas, creo que para implementarlo puede ser un poco mas claro de leer.
+    Solo hay que tomar en cuenta que puede ser un poco mas de esfuerzo para implementar al inicio del desarrollo.
+    Muy favorable también a la hora de cambiar proyectos enteros, al no tener auto gestionadas sus inyecciones de dependencias.
+
 - Do you think there is anything that can be improved in the SamplesController?
+
+    - Creo que estaria bien agregar un mayor control de excepciones.
 
 *These questions can be answered in Spanish*.
 
 # Requirements summary
 To help you keep track of it:
 - Do not expose any internal Id.
+    - Para este punto uso el JsonIgnore al ser una lógica de exclusión muy simple, si hiciera falta una conversión mas compleja usaría automapper o un mapper ad hoc.
 - Log every request.
+    - Para esto uso Diagnostic.Activity And install Application Insights
 - ISampleService implementation.
 - Validations Create method.
 - Validations Update method.

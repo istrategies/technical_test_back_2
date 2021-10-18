@@ -3,7 +3,7 @@ using SampleApp.Domain.Entities;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace SampleApp.Infrastructure.Data.Models.Extensions
 {
@@ -20,8 +20,8 @@ namespace SampleApp.Infrastructure.Data.Models.Extensions
         {
             var root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
-            List<Sample> samples = JsonSerializer.Deserialize<List<Sample>>(File.ReadAllText(Path.Combine(root, Constants.SAMPLE_SEED_PATH)));
-            List<SubSample> subSamples = JsonSerializer.Deserialize<List<SubSample>>(File.ReadAllText(Path.Combine(root, Constants.SUBSAMPLE_SEED_PATH)));
+            IEnumerable<Sample> samples = JsonConvert.DeserializeObject<List<Sample>>(File.ReadAllText(Path.Combine(root, Constants.SAMPLE_SEED_PATH)));
+            IEnumerable<SubSample> subSamples = JsonConvert.DeserializeObject<List<SubSample>>(File.ReadAllText(Path.Combine(root, Constants.SUBSAMPLE_SEED_PATH)));
 
             modelBuilder.Entity<Sample>().HasData(samples);
             modelBuilder.Entity<SubSample>().HasData(subSamples);
