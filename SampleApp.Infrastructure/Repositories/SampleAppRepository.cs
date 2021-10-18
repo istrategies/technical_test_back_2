@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SampleApp.Domain.Entities;
+using SampleApp.Infrastructure.Contracts.Configuration;
 using SampleApp.Infrastructure.Contracts.Repositories;
 using SampleApp.Infrastructure.Data.Models;
 
@@ -11,12 +12,15 @@ namespace SampleApp.Infrastructure.Repositories
 {
     public class SampleAppRepository : ISampleAppRepository
     {
+        private readonly ISampleRepositoryConfiguration _sampleRepositoryConfiguration;
         protected SampleContext DbContext;
         protected DbSet<Sample> DbSet;
 
-        public SampleAppRepository(SampleContext dbContext)
+        public SampleAppRepository(SampleContext dbContext, 
+            ISampleRepositoryConfiguration sampleRepositoryConfiguration)
         {
             DbContext = dbContext;
+            _sampleRepositoryConfiguration = sampleRepositoryConfiguration;
             SetDbSet();
         }
 
@@ -24,7 +28,7 @@ namespace SampleApp.Infrastructure.Repositories
         {
             IQueryable<Sample> query = DbSet;
             var result = await query.ToListAsync();
-            return result;
+            return GetPageSublist(result);
         }
 
         public async Task<Sample> GetByIdAsync(Guid id)
@@ -71,6 +75,13 @@ namespace SampleApp.Infrastructure.Repositories
         private async Task SaveChangesAsync()
         {
             await DbContext.SaveChangesAsync();
+        }
+
+        private IEnumerable<Sample> GetPageSublist(IEnumerable<Sample> unorderedCollection)
+        {
+            var orderedCollection = unorderedCollection.OrderByDescending(o => o.Created).ToList();
+
+            return orderedCollection.Take(_sampleRepositoryConfiguration.DefaultRowsOfSamples);
         }
     }
 }

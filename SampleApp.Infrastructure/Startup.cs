@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SampleApp.Infrastructure.Configuration;
+using SampleApp.Infrastructure.Contracts.Configuration;
 using SampleApp.Infrastructure.Contracts.Repositories;
 using SampleApp.Infrastructure.Data.Models;
 using SampleApp.Infrastructure.Repositories;
@@ -25,6 +27,7 @@ namespace SampleApp.Infrastructure
         {
             services.AddSingleton<ISampleAppRepository, SampleAppRepository>();
             services.AddSingleton<ISubSampleAppRepository, SubSampleAppRepository>();
+            services.AddSingleton<ISampleRepositoryConfiguration, SampleRepositoryConfiguration>();
             return services;
         }
     }
