@@ -2,7 +2,6 @@
 using AutoMapper;
 using SampleApp.Application.Contracts.DTO;
 using SampleApp.Domain.Entities;
-using SubSample = SampleApp.Application.Contracts.DTO.SubSample;
 
 namespace SampleApp.Application.Mapper
 {
@@ -15,8 +14,8 @@ namespace SampleApp.Application.Mapper
 
             Config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<SubSample, Domain.Entities.SubSample>();
-                cfg.CreateMap<Domain.Entities.SubSample, SubSample>()
+                cfg.CreateMap<Contracts.DTO.SubSample, Domain.Entities.SubSample>();
+                cfg.CreateMap<Domain.Entities.SubSample, Contracts.DTO.SubSample>()
                     .ForMember(s => s.SubSampleId, op => op.Ignore());
                 cfg.CreateMap<SampleForCreate, Sample>()
                     .ForMember(dest => dest.Created, opts => opts.MapFrom(s => DateTime.UtcNow))
