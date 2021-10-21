@@ -8,7 +8,7 @@ namespace SampleApp.Application.Contracts.DTO
     /// </summary>
     public class SampleForRead
     {
-        public Guid Sample1Id { get; set; }
+        public string SampleId { get; set; }
 
         public string Name { get; set; }
 
@@ -19,7 +19,7 @@ namespace SampleApp.Application.Contracts.DTO
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"Id: {Sample1Id} - Name: {Name}";
+            return $"Id: {SampleId} - Name: {Name}";
         }
     }
 }

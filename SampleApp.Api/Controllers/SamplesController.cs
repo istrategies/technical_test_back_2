@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SampleApp.Application.Contracts.DTO;
 using SampleApp.Application.Contracts.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace SampleApp.Api.Controllers
@@ -36,11 +38,19 @@ namespace SampleApp.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<SampleForRead>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllAsync()
         {
+            Activity.Current
+                .Start()
+                .AddTag("Log", $"{nameof(GetAllAsync)} is called")
+                .AddTag("Headers", HttpContext.Request.Headers.ToString())
+                .AddTag("Body", HttpContext.Request.Body.ToString())
+                .AddTag("Client IP", HttpContext.Connection.RemoteIpAddress.ToString());
+
             IEnumerable<SampleForRead> result;
 
             using (_service)
                 result = await _service.GetAllSamplesAsync();
-
+            
+            Activity.Current.Stop();
             return Ok(result);
         }
 
@@ -56,6 +66,14 @@ namespace SampleApp.Api.Controllers
         [ProducesResponseType(typeof(SampleForRead), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
+            Activity.Current
+                .Start()
+                .AddTag("Log", $"{nameof(GetByIdAsync)} is called")
+                .AddTag("Headers", HttpContext.Request.Headers.ToString())
+                .AddTag("Body", HttpContext.Request.Body.ToString())
+                .AddTag("Client IP", HttpContext.Connection.RemoteIpAddress.ToString())
+                .AddTag("Sample Id:", id.ToString());
+
             SampleForRead result;
 
             using (_service)
@@ -64,6 +82,7 @@ namespace SampleApp.Api.Controllers
             if (result == null)
                 return NotFound();
 
+            Activity.Current.Stop();
             return Ok(result);
         }
 
@@ -78,6 +97,14 @@ namespace SampleApp.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<SubSample>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetSubSamplesAsync(Guid id)
         {
+            Activity.Current
+                .Start()
+                .AddTag("Log", $"{nameof(GetSubSamplesAsync)} is called")
+                .AddTag("Headers", HttpContext.Request.Headers.ToString())
+                .AddTag("Body", HttpContext.Request.Body.ToString())
+                .AddTag("Client IP", HttpContext.Connection.RemoteIpAddress.ToString())
+                .AddTag("Sample Id:", id.ToString());
+
             IEnumerable<SubSample> result;
 
             using (_service)
@@ -87,6 +114,7 @@ namespace SampleApp.Api.Controllers
             if (result == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, Constants.UNEXPECTED_ERROR);
 
+            Activity.Current.Stop();
             return Ok(result);
         }
 
@@ -101,6 +129,16 @@ namespace SampleApp.Api.Controllers
         [ProducesResponseType(typeof(SampleForRead), StatusCodes.Status201Created)]
         public async Task<IActionResult> CreateAsync(SampleForCreate sample)
         {
+            if (!ModelState.IsValid || sample == null) return BadRequest();
+
+            Activity.Current
+                .Start()
+                .AddTag("Log", $"{nameof(CreateAsync)} is called")
+                .AddTag("Headers", HttpContext.Request.Headers.ToString())
+                .AddTag("Body", HttpContext.Request.Body.ToString())
+                .AddTag("Client IP", HttpContext.Connection.RemoteIpAddress.ToString())
+                .AddTag("Sample Request:", JsonConvert.SerializeObject(sample));
+
             SampleForRead result;
 
             using (_service)
@@ -111,7 +149,8 @@ namespace SampleApp.Api.Controllers
             // Just in case, this scenario should not happen
             if (result == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, Constants.UNEXPECTED_ERROR);
-
+            
+            Activity.Current.Stop();
             return Created(string.Empty, result);
         }
 
@@ -127,6 +166,16 @@ namespace SampleApp.Api.Controllers
         [ProducesResponseType(typeof(SampleForRead), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateAsync(SampleForUpdate sample)
         {
+            if (!ModelState.IsValid || sample == null) return BadRequest();
+
+            Activity.Current
+                .Start()
+                .AddTag("Log", $"{nameof(UpdateAsync)} is called")
+                .AddTag("Headers", HttpContext.Request.Headers.ToString())
+                .AddTag("Body", HttpContext.Request.Body.ToString())
+                .AddTag("Client IP", HttpContext.Connection.RemoteIpAddress.ToString())
+                .AddTag("Sample Request:", JsonConvert.SerializeObject(sample));
+
             SampleForRead result;
 
             using (_service)
@@ -136,6 +185,7 @@ namespace SampleApp.Api.Controllers
             if (result == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, Constants.UNEXPECTED_ERROR);
 
+            Activity.Current.Stop();
             return Ok(result);
         }
 
@@ -150,9 +200,18 @@ namespace SampleApp.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
+            Activity.Current
+                .Start()
+                .AddTag("Log", $"{nameof(DeleteAsync)} is called")
+                .AddTag("Headers", HttpContext.Request.Headers.ToString())
+                .AddTag("Body", HttpContext.Request.Body.ToString())
+                .AddTag("Client IP", HttpContext.Connection.RemoteIpAddress.ToString())
+                .AddTag("Sample Id:", id.ToString());
+
             using (_service)
                 await _service.DeleteSampleAsync(id);
     
+            Activity.Current.Stop();
             return NoContent();
         }
     }

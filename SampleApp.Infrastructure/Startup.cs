@@ -1,5 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SampleApp.Infrastructure.Configuration;
+using SampleApp.Infrastructure.Contracts.Configuration;
+using SampleApp.Infrastructure.Contracts.Repositories;
 using SampleApp.Infrastructure.Data.Models;
+using SampleApp.Infrastructure.Repositories;
 
 namespace SampleApp.Infrastructure
 {
@@ -12,9 +16,18 @@ namespace SampleApp.Infrastructure
         /// <returns></returns>
         public static IServiceCollection AddInfrastructureLayer(this IServiceCollection services)
         {
-            SampleContext cntxt = new SampleContext();
+            var cntxt = new SampleContext();
             cntxt.Database.EnsureCreated();
             services.AddSingleton(cntxt);
+            services.AddInfrastructureRepositories();
+            return services;
+        }
+
+        public static IServiceCollection AddInfrastructureRepositories(this IServiceCollection services)
+        {
+            services.AddSingleton<ISampleAppRepository, SampleAppRepository>();
+            services.AddSingleton<ISubSampleAppRepository, SubSampleAppRepository>();
+            services.AddSingleton<ISampleRepositoryConfiguration, SampleRepositoryConfiguration>();
             return services;
         }
     }
